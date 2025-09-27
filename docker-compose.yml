@@ -1,0 +1,40 @@
+services:
+  bot:
+    build: .
+    container_name: discord-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - lavalink
+    networks:
+      - lavalink
+    volumes:
+      - ./src:/app/src
+      - ./main.py:/app/main.py
+
+  lavalink:
+    # pin the image version to Lavalink v4 and use the alpine variant for a smaller image size
+    image: ghcr.io/lavalink-devs/lavalink:4-alpine
+    container_name: lavalink
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      # mount application.yml from the same directory, if you want to use environment variables remove this line below
+      - ./lavalink/application.yml:/opt/Lavalink/application.yml
+    networks:
+      - lavalink
+    expose:
+      # lavalink exposes port 2333 to connect to for other containers (this is for documentation purposes only)
+      - 2333
+    ports:
+      # you only need this if you want to make your lavalink accessible from outside of containers, keep in mind this will expose your lavalink to the internet
+      - "2333:2333"
+      # if you want to restrict access to localhost only
+      # - "127.0.0.1:2333:2333"
+
+networks:
+  # create a lavalink network you can add other containers to, to give them access to Lavalink
+  lavalink:
+    name: lavalink
