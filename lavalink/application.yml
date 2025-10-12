@@ -9,7 +9,7 @@ plugins:
 #    another_key: another_value
 lavalink:
   plugins:
-    - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.5"
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.15.0"
       snapshot: false
   server:
     password: ${LAVALINK_PASSWORD:-change-me}
