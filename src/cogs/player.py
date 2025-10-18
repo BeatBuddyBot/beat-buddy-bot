@@ -4,6 +4,7 @@ import discord
 import lavalink
 from discord.ext import commands
 from lavalink import ClientError, LoadType
+from lavalink.playermanager import PlayerT
 
 
 class LavalinkVoiceClient(discord.VoiceProtocol):
@@ -164,3 +165,15 @@ class MusicPlayer(commands.Cog):
     async def pause(self):
         player = self.bot.lavalink.player_manager.get(self.channel.guild.id)
         await player.set_pause(not player.paused)
+
+    async def repeat(self):
+        player = self.bot.lavalink.player_manager.get(self.channel.guild.id)
+
+        if player.loop == player.LOOP_NONE:
+            player.loop = player.LOOP_QUEUE
+        elif player.loop == player.LOOP_QUEUE:
+            player.loop = player.LOOP_SINGLE
+        elif player.loop == player.LOOP_SINGLE:
+            player.loop = player.LOOP_NONE
+
+        await self.channel.send(player.loop)
