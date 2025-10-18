@@ -12,6 +12,8 @@ services:
     volumes:
       - ./src:/app/src
       - ./main.py:/app/main.py
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   lavalink:
     # pin the image version to Lavalink v4 and use the alpine variant for a smaller image size

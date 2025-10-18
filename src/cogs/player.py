@@ -4,7 +4,6 @@ import discord
 import lavalink
 from discord.ext import commands
 from lavalink import ClientError, LoadType
-from lavalink.playermanager import PlayerT
 
 
 class LavalinkVoiceClient(discord.VoiceProtocol):
