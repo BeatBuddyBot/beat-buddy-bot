@@ -89,10 +89,10 @@ class MusicPlayer(commands.Cog):
 
         self.lavalink: lavalink.Client = bot.lavalink
         self.lavalink.add_event_hooks(self)
-        self.guild = bot.get_guild(os.getenv("DISCORD_GUILD_ID"))
-        self.channel = bot.get_channel(os.getenv("DISCORD_CHANNEL_ID"))
-        self.voice_channel = bot.get_channel(os.getenv("DISCORD_VOICE_CHANNEL_ID"))
-        self.author = self.guild.get_member(os.getenv("DISCORD_AUTHOR_ID"))
+        self.guild = bot.get_guild(int(os.getenv("DISCORD_GUILD_ID")))
+        self.channel = bot.get_channel(int(os.getenv("DISCORD_CHANNEL_ID")))
+        self.voice_channel = bot.get_channel(int(os.getenv("DISCORD_VOICE_CHANNEL_ID")))
+        self.author = self.guild.get_member(int(os.getenv("DISCORD_AUTHOR_ID")))
 
     async def create_player(self):
         if self.channel.guild is None:
