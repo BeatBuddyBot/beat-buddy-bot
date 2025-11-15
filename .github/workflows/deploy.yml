@@ -25,13 +25,6 @@ jobs:
           git checkout ${{ github.ref_name }} || git checkout -b ${{ github.ref_name }} origin/${{ github.ref_name }}
           git reset --hard origin/${{ github.ref_name }}
 
-          cat > .env << EOF
-          DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}
-          LAVALINK_HOST=lavalink
-          LAVALINK_PORT=2333
-          LAVALINK_PASSWORD=${{ secrets.LAVALINK_PASSWORD }}
-          EOF
-
           docker compose down --remove-orphans
           docker compose pull
           docker compose build --no-cache

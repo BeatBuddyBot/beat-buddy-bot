@@ -113,7 +113,7 @@ class MusicPlayer(commands.Cog):
                     raise self.channel.send('Your voice channel is full!')
 
             player.store('channel', self.channel.id)
-            await self.author.voice.channel.connect(cls=LavalinkVoiceClient)
+            await self.voice_channel.connect(cls=LavalinkVoiceClient)
         elif voice_client.channel.id != self.voice_channel.id:
             raise self.channel.send('You need to be in my voicechannel.')
 
