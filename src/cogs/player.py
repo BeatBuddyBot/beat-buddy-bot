@@ -124,29 +124,22 @@ class MusicPlayer(commands.Cog):
 
         player = self.bot.lavalink.player_manager.get(self.channel.guild.id)
 
+        player.queue.clear()
+        await player.stop()
+
         for url in urls:
-            results = await player.node.get_tracks(url)
+            result = await player.node.get_tracks(url)
 
             embed = discord.Embed(color=discord.Color.blurple())
 
-            if results.load_type == LoadType.EMPTY:
+            if not result.tracks or result.load_type == LoadType.EMPTY:
                 return await self.channel.send("I couldn'\t find any tracks for that query.")
-            elif results.load_type == LoadType.PLAYLIST:
-                tracks = results.tracks
-
-                for track in tracks:
+            else:
+                for track in result.tracks:
+                    embed.title = 'Track Enqueued'
+                    embed.description = f'[{track.title}]({track.uri})'
                     track.extra["requester"] = self.author.id
                     player.add(track=track)
-
-                embed.title = 'Playlist Enqueued!'
-                embed.description = f'{results.playlist_info.name} - {len(tracks)} tracks'
-            else:
-                track = results.tracks[0]
-                embed.title = 'Track Enqueued'
-                embed.description = f'[{track.title}]({track.uri})'
-                track.extra["requester"] = self.author.id
-
-                player.add(track=track)
 
             await self.channel.send(embed=embed)
 
@@ -155,6 +148,7 @@ class MusicPlayer(commands.Cog):
 
     async def stop(self):
         player = self.bot.lavalink.player_manager.get(self.channel.guild.id)
+        player.queue.clear()
         await player.stop()
 
     async def skip(self):
